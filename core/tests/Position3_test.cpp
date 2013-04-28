@@ -1,7 +1,7 @@
 #define BOOST_TEST_MODULE "Position3_test"
-#define BOOST_TEST_NO_LIB
+//#define BOOST_TEST_NO_LIB
 
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 
 #include "../Position3.hpp"
 #include "../linear_algebra.hpp"
