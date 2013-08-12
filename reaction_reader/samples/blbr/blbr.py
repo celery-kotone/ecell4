@@ -3,6 +3,8 @@ from ecell4.reaction_reader.species import generate_reactions
 
 @species_attributes
 def attributegen():
+    R0 = 14 
+    L0 = 15
     # R(r,r) | R0
     R(r1,r2) | R0
     # L(l,l) | L0
