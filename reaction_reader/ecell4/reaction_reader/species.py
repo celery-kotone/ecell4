@@ -1,6 +1,7 @@
 import copy
 import itertools
 
+import string   # for convert into .bngl
 
 label_subunit = lambda x: "subunit%s" % x
 label_binding = lambda x: "binding%s" % x
@@ -95,6 +96,9 @@ class Species(object):
                 else:
                     su.modifications[mod] = (state, newbinding)
 
+    def convert2bng(self):
+        return ".".join([subunit.convert2bng() for subunit in self.subunits])
+
     def __str__(self):
         return ".".join([str(subunit) for subunit in self.subunits])
 
@@ -129,6 +133,10 @@ class Subunit(object):
 
     def add_modification(self, mod, state="", binding=""):
         self.modifications[mod] = (state, str(binding))
+
+    def convert2bng(self):
+        #return str(self).replace('=', '~').replace('^', '!')
+        return str(self).translate(string.maketrans('=^', '~!'))
 
     def __str__(self):
         mods1, mods2 = [], []
@@ -392,6 +400,11 @@ class ReactionRule(object):
                 else:
                     retval.append(products)
         return retval
+
+    def convert2bng(self):
+        return "%s -> %s" % (
+            "+".join([sp.convert2bng() for sp in self.__reactants]),
+            "+".join([sp.convert2bng() for sp in self.__products]))
 
     def __str__(self):
         return "%s>%s" % (
@@ -898,6 +911,12 @@ def generate_reactions(newseeds, rules, max_iter=10, max_stoich={}):
         print "%5d %s" % (i + 1, str(sp))
 
     return seeds + newseeds
+
+def convert2bng_seed_species(func):
+    print "begin seed species"
+    for i, (sp, attr) in enumerate( func ):
+        print "\t%s\t%d" % (sp.convert2bng(), attr)
+    print "end seed species"
 
 
 if __name__ == "__main__":
