@@ -135,8 +135,27 @@ class Subunit(object):
         self.modifications[mod] = (state, str(binding))
 
     def convert2bng(self):
-        #return str(self).replace('=', '~').replace('^', '!')
-        return str(self).translate(string.maketrans('=^', '~!'))
+        mods1, mods2 = [], []
+        for mod, (state, binding) in self.modifications.items():
+            if state == '':
+                if binding == '_':
+                    mods1.append("%s!+" % (mod))
+                elif binding != '':
+                    mods1.append("%s!%s" % (mod, binding))
+                else:
+                    mods1.append(mod)
+            else:
+                if binding == '_':
+                    mods2.append("%s~%s!+" % (mod, binding))
+                elif binding == "":
+                    mods2.append("%s~%s" % (mod, state))
+                else:
+                    mods2.append("%s~%s!%s", (mod, state, binding))
+        mods1.sort()
+        mods2.sort()
+        mods1.extend(mods2)
+        #return str(self).translate(string.maketrans('=^', '~!'))
+        return "%s(%s)" % (self.name, ",".join(mods1))
 
     def __str__(self):
         mods1, mods2 = [], []
@@ -912,12 +931,17 @@ def generate_reactions(newseeds, rules, max_iter=10, max_stoich={}):
 
     return seeds + newseeds
 
-def convert2bng_seed_species(func):
+def convert2bng_seed_species(species):
     print "begin seed species"
-    for i, (sp, attr) in enumerate( func ):
+    for i, (sp, attr) in enumerate( species ):
         print "\t%s\t%d" % (sp.convert2bng(), attr)
     print "end seed species"
 
+def convert2bng_reaction_rules(rules):
+    print "begin reaction rules"
+    for i, rr in enumerate(rules):
+        print "\t%s" % (rr.convert2bng())
+    print "begin reaction rules"
 
 if __name__ == "__main__":
     s1 = Species()
