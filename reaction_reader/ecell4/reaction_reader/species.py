@@ -941,7 +941,7 @@ def convert2bng_reaction_rules(rules):
     print "begin reaction rules"
     for i, rr in enumerate(rules):
         print "\t%s" % (rr.convert2bng())
-    print "begin reaction rules"
+    print "end reaction rules"
 
 if __name__ == "__main__":
     s1 = Species()
