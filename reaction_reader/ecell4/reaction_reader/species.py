@@ -940,17 +940,8 @@ def generate_reactions(newseeds, rules, max_iter=10, max_stoich={}):
 
     return seeds + newseeds
 
-class MoleculeTypes(object):
-    def __init__(self, name):
-        self.__name = name
-    def __len__(self):
-        pass
-    def name(self):
-        return self.__name
-    pass
 
-
-def convert2bng_moleculetypes(rules):
+def convert2bng_moleculetypes(fd, rules):
     def add_modification_collection_dict(current_dict, subunit):
         su_name = subunit.get_name()
         if not current_dict.has_key( su_name ):
@@ -986,23 +977,30 @@ def convert2bng_moleculetypes(rules):
         for p in products:
             for su in p.get_subunit_list():
                 modification_collection_dict = add_modification_collection_dict(modification_collection_dict, su)
-    print "begin molecule types"
+    fd.write("begin molecule types\n")
     strings = format_as_molecule_types(modification_collection_dict)      
     for s in strings:
-        print "\t%s" % s
-    print "end molecule types"
+        fd.write("\t%s\n" % s)
+    fd.write("end molecule types\n")
 
-def convert2bng_seed_species(species):
-    print "begin seed species"
+def convert2bng_seed_species(fd, species):
+    fd.write("begin seed species\n")
     for i, (sp, attr) in enumerate( species ):
-        print "\t%s\t%d" % (sp.convert2bng(), attr)
-    print "end seed species"
+        fd.write("\t%s\t%d\n" % (sp.convert2bng(), attr))
+    fd.write("end seed species\n")
 
-def convert2bng_reaction_rules(rules):
-    print "begin reaction rules"
+def convert2bng_reaction_rules(fd, rules):
+    fd.write("begin reaction rules\n")
     for i, rr in enumerate(rules):
-        print "\t%s" % (rr.convert2bng())
-    print "end reaction rules"
+        fd.write("\t%s\n" % (rr.convert2bng()))
+    fd.write("end reaction rules\n")
+
+def export_bng(fd, species, rules):
+    fd.write("begin model\n")
+    convert2bng_moleculetypes(fd, rules)
+    convert2bng_seed_species(fd, species)
+    convert2bng_reaction_rules(fd, rules)
+    fd.write("end model\n")
 
 if __name__ == "__main__":
     s1 = Species()
