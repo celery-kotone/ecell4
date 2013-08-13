@@ -159,7 +159,7 @@ class Subunit(object):
                 elif binding == "":
                     mods2.append("%s~%s" % (mod, state))
                 else:
-                    mods2.append("%s~%s!%s", (mod, state, binding))
+                    mods2.append("%s~%s!%s" % (mod, state, binding))
         mods1.sort()
         mods2.sort()
         mods1.extend(mods2)
@@ -967,7 +967,7 @@ def convert2bng_moleculetypes(rules):
             mod_list = []
             for m, state_list in current_dict[su_name].items():
                 mod = "%s" % m
-                for state in state_list:
+                for state in list(set(state_list)):
                     if state != '':
                         mod = "%s~%s" % (mod, state)
                 mod_list.append(mod)
