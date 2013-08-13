@@ -992,7 +992,7 @@ def convert2bng_seed_species(fd, species):
 def convert2bng_reaction_rules(fd, rules):
     fd.write("begin reaction rules\n")
     for i, rr in enumerate(rules):
-        fd.write("\t%s\n" % (rr.convert2bng()))
+        fd.write("\t%s\t%f\n" % (rr.convert2bng(), rr.k()) )
     fd.write("end reaction rules\n")
 
 def export_bng(fd, species, rules):
