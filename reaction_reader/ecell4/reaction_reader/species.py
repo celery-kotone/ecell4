@@ -959,7 +959,7 @@ def convert2bng_moleculetypes(fd, rules):
             for m, state_list in current_dict[su_name].items():
                 mod = "%s" % m
                 for state in list(set(state_list)):
-                    if state != '':
+                    if state != '' and state != "_":
                         mod = "%s~%s" % (mod, state)
                 mod_list.append(mod)
             retval.append("%s(%s)" % (su_name, ','.join(mod_list) ))
