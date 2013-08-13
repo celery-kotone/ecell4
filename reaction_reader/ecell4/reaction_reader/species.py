@@ -22,6 +22,9 @@ class Species(object):
                     retval = max(retval, int(binding))
         return retval
 
+    def get_subunit_list(self):
+        return self.subunits
+
     def update_indices(self):
         for i, subunit in enumerate(self.subunits):
             subunit.index = i
@@ -120,6 +123,9 @@ class Subunit(object):
 
         self.index = None #XXX
 
+    def get_name(self):
+        return self.name
+
     def generate_conditions(self, key):
         conditions = []
         conditions.append(SubunitContainingCondition(key, self.name))
@@ -133,6 +139,9 @@ class Subunit(object):
 
     def add_modification(self, mod, state="", binding=""):
         self.modifications[mod] = (state, str(binding))
+
+    def get_modifications(self):
+        return self.modifications
 
     def convert2bng(self):
         mods1, mods2 = [], []
@@ -930,6 +939,58 @@ def generate_reactions(newseeds, rules, max_iter=10, max_stoich={}):
         print "%5d %s" % (i + 1, str(sp))
 
     return seeds + newseeds
+
+class MoleculeTypes(object):
+    def __init__(self, name):
+        self.__name = name
+    def __len__(self):
+        pass
+    def name(self):
+        return self.__name
+    pass
+
+
+def convert2bng_moleculetypes(rules):
+    def add_modification_collection_dict(current_dict, subunit):
+        su_name = subunit.get_name()
+        if not current_dict.has_key( su_name ):
+            current_dict[subunit.get_name()] = {}
+        for mod, (state, binding) in subunit.get_modifications().items():
+            if mod in current_dict[su_name]:
+                current_dict[su_name][mod].append(state)
+            else:
+                current_dict[su_name][mod] = [state]
+        return current_dict
+    def format_as_molecule_types(current_dict):
+        retval = []
+        for su_name in current_dict:
+            mod_list = []
+            for m, state_list in current_dict[su_name].items():
+                mod = "%s" % m
+                for state in state_list:
+                    if state != '':
+                        mod = "%s~%s" % (mod, state)
+                mod_list.append(mod)
+            retval.append("%s(%s)" % (su_name, ','.join(mod_list) ))
+        return retval
+
+    modification_collection_dict = {}
+    reactants = []
+    products = []
+    for rr in rules:
+        reactants = rr.reactants()
+        products  = rr.products()
+        for r in reactants:
+            for su in r.get_subunit_list():
+                modification_collection_dict = add_modification_collection_dict(modification_collection_dict, su)
+        for p in products:
+            for su in p.get_subunit_list():
+                modification_collection_dict = add_modification_collection_dict(modification_collection_dict, su)
+    print "begin molecule types"
+    strings = format_as_molecule_types(modification_collection_dict)      
+    for s in strings:
+        print "\t%s" % s
+    print "end molecule types"
 
 def convert2bng_seed_species(species):
     print "begin seed species"
