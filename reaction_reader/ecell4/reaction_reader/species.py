@@ -986,7 +986,7 @@ def convert2bng_moleculetypes(fd, rules):
 def convert2bng_seed_species(fd, species):
     fd.write("begin seed species\n")
     for i, (sp, attr) in enumerate( species ):
-        fd.write("\t%s\t%d\n" % (sp.convert2bng(), attr))
+        fd.write("\t%s\t%f\n" % (sp.convert2bng(), attr))
     fd.write("end seed species\n")
 
 def convert2bng_reaction_rules(fd, rules):
