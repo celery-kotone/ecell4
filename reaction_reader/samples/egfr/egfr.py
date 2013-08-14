@@ -4,6 +4,12 @@ from ecell4.reaction_reader.species import generate_reactions
 
 @species_attributes
 def attributegen():
+    egf_tot = 1.0
+    Grb2_tot = 2.0
+    Shc_tot = 3.0
+    Sos_tot = 4.0
+    egfr_tot = 5.0
+    Grb2_Sos_tot = 6.0
     egf(r) | egf_tot
     Grb2(SH2, SH3) | Grb2_tot
     Shc(PTB, Y317=Y) | Shc_tot
