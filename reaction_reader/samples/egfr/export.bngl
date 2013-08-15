@@ -1,0 +1,37 @@
+begin model
+begin molecule types
+	Grb2(SH2,SH3)
+	Sos(dom)
+	Shc(Y317~Y~pY,PTB)
+	egfr(Y1068~Y~pY,r,l,Y1148~Y~pY)
+	egf(r)
+end molecule types
+begin seed species
+	egf(r)	1.000000
+	Grb2(SH2,SH3)	2.000000
+	Shc(PTB,Y317~Y)	3.000000
+	Sos(dom)	4.000000
+	egfr(l,r,Y1068~Y,Y1148~Y)	5.000000
+	Grb2(SH2,SH3!1).Sos(dom!1)	6.000000
+end seed species
+begin reaction rules
+	egfr(l,r)+egf(r) -> egfr(l!1,r).egf(r!1)	1.000000
+	egfr(l!1,r).egf(r!1) -> egfr(l,r)+egf(r)	1.000000
+	egfr(l!+,r)+egfr(l!+,r) -> egfr(l!+,r!3).egfr(l!+,r!3)	2.000000
+	egfr(l!+,r!3).egfr(l!+,r!3) -> egfr(l!+,r)+egfr(l!+,r)	2.000000
+	egfr(r!+,Y1068~Y) -> egfr(r!+,Y1068~pY)	3.000000
+	egfr(r!+,Y1148~Y) -> egfr(r!+,Y1148~pY)	3.000000
+	egfr(Y1068~pY) -> egfr(Y1068~Y)	4.000000
+	egfr(Y1148~pY) -> egfr(Y1148~Y)	4.000000
+	egfr(r!+,Y1148~pY!1).Shc(PTB!1,Y317~Y) -> egfr(r!+,Y1148~pY!1).Shc(PTB!1,Y317~pY)	4.000000
+	Shc(PTB!+,Y317~pY) -> Shc(PTB!+,Y317~Y)	5.000000
+	egfr(Y1068~pY)+Grb2(SH2,SH3) -> egfr(Y1068~pY!1).Grb2(SH2!1,SH3)	5.000000
+	egfr(Y1068~pY!1).Grb2(SH2!1,SH3) -> egfr(Y1068~pY)+Grb2(SH2,SH3)	6.000000
+	egfr(Y1068~pY)+Grb2(SH2,SH3!+) -> egfr(Y1068~pY!1).Grb2(SH2!1,SH3!+)	6.000000
+	egfr(Y1068~pY!1).Grb2(SH2!1,SH3!+) -> egfr(Y1068~pY)+Grb2(SH2,SH3!+)	7.000000
+	egfr(Y1068~pY!1).Grb2(SH2!1,SH3)+Sos(dom) -> egfr(Y1068~pY!1).Grb2(SH2!1,SH3!2).Sos(dom!2)	7.000000
+	egfr(Y1068~pY!1).Grb2(SH2!1,SH3!2).Sos(dom!2) -> egfr(Y1068~pY!1).Grb2(SH2!1,SH3)+Sos(dom)	8.000000
+	egfr(Y1148~pY)+Shc(PTB,Y317~Y) -> egfr(Y1148~pY!1).Shc(PTB!1,Y317~Y)	8.000000
+	egfr(Y1148~pY!1).Shc(PTB!1,Y317~Y) -> egfr(Y1148~pY)+Shc(PTB,Y317~Y)	9.000000
+	egfr(Y1148~pY)+Shc(PTB,Y317~pY) -> egfr(Y1148~pY!1).Shc(PTB!1,Y317~pY)	9.000000
+	egfr(Y1148~pY!1).Shc(PTB!1,Y317~pY) -> egfr(Y1148~pY)+Shc(PTB,Y317~pY)	10.000000

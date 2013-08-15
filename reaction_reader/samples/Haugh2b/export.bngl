@@ -1,0 +1,34 @@
+begin model
+begin molecule types
+	S2(Y~P~U,SH2)
+	S1(SH2,PTP)
+	R(Y1~P,KD)
+end molecule types
+begin seed species
+	R(KD,Y1~P)	0.500000
+	S1(PTP,SH2)	1.000000
+	S2(SH2,Y~U)	0.250000
+end seed species
+begin reaction rules
+	R(Y1~P)+S1(SH2) -> R(Y1~P!1).S1(SH2!1)	1.000000 exlude_reactants(2,R)
+	R(Y1~P!1).S1(SH2!1) -> R(Y1~P)+S1(SH2)	2.000000 exlude_products(2,R)
+	R(Y1~P)+S1(SH2) -> R(Y1~P!1).S1(SH2!1)	11.000000 inlude_reactants(2,R)
+	R(Y1~P!1).S1(SH2!1) -> R(Y1~P)+S1(SH2)	2.000000 inlude_products(2,R)
+	R(Y1~P)+S2(SH2) -> R(Y1~P!1).S2(SH2!1)	3.000000 exlude_reactants(2,R)
+	R(Y1~P!1).S2(SH2!1) -> R(Y1~P)+S2(SH2)	4.000000 exlude_products(2,R)
+	R(Y1~P)+S2(SH2) -> R(Y1~P!1).S2(SH2!1)	33.000000 inlude_reactants(2,R)
+	R(Y1~P!1).S2(SH2!1) -> R(Y1~P)+S2(SH2)	4.000000 inlude_products(2,R)
+	R(KD,Y1~P!1).S2(SH2!1,Y~U) -> R(KD!2,Y1~P!1).S2(SH2!1,Y~U!2)	8.000000
+	R(KD!2,Y1~P!1).S2(SH2!1,Y~U!2) -> R(KD,Y1~P!1).S2(SH2!1,Y~U)	9.000000
+	R(KD!2,Y1~P!1).S2(SH2!1,Y~U!2) -> R(KD,Y1~P!1).S2(SH2!1,Y~P)	10.000000
+	S2(Y~P)+S1(PTP) -> S2(Y~P!1).S1(PTP!1)	5.000000 exlude_reactants(1,R) exlude_reactants(2,R)
+	S2(Y~P!1).S1(PTP!1) -> S2(Y~P)+S1(PTP)	6.000000 exlude_products(1,R) exlude_products(2,R)
+	S2(Y~P)+S1(PTP) -> S2(Y~P!1).S1(PTP!1)	5.000000 exlude_reactants(1,R) inlude_reactants(2,R)
+	S2(Y~P!1).S1(PTP!1) -> S2(Y~P)+S1(PTP)	6.000000 exlude_products(1,R) inlude_products(2,R)
+	S2(Y~P)+S1(PTP) -> S2(Y~P!1).S1(PTP!1)	5.000000 inlude_reactants(1,R) exlude_reactants(2,R)
+	S2(Y~P!1).S1(PTP!1) -> S2(Y~P)+S1(PTP)	6.000000 inlude_products(1,R) exlude_products(2,R)
+	S2(Y~P)+S1(PTP) -> S2(Y~P!1).S1(PTP!1)	55.000000 inlude_reactants(1,R) inlude_reactants(2,R)
+	S2(Y~P!1).S1(PTP!1) -> S2(Y~P)+S1(PTP)	6.000000 inlude_products(1,R) inlude_products(2,R)
+	S2(Y~P!1).S1(PTP!1) -> S2(Y~U)+S1(PTP)	7.000000
+end reaction rules
+end model

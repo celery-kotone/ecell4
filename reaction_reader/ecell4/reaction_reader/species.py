@@ -273,7 +273,8 @@ class ReactionRule(object):
 
     def products(self):
         return copy.deepcopy(self.__products)
-
+    def options(self):
+        return self.__options
     def num_reactants(self):
         return len(self.__reactants)
 
@@ -688,6 +689,9 @@ class IncludeReactants(Option):
         sp = reactants[self.__idx - 1]
         return (self.__pttrn in [su.name for su in sp.subunits])
 
+    def convert2bng(self):
+        return "inlude_reactants(%d,%s)" % (self.__idx, self.__pttrn)
+
 class ExcludeReactants(Option):
 
     def __init__(self, idx, pttrn):
@@ -709,6 +713,9 @@ class ExcludeReactants(Option):
         sp = reactants[self.__idx - 1]
         return not (self.__pttrn in [su.name for su in sp.subunits])
 
+    def convert2bng(self):
+        return "exlude_reactants(%d,%s)" % (self.__idx, self.__pttrn)
+
 class IncludeProducts(Option):
 
     def __init__(self, idx, pttrn):
@@ -729,6 +736,9 @@ class IncludeProducts(Option):
         sp = products[correspondence[self.__idx - 1]]
         return (self.__pttrn in [su.name for su in sp.subunits])
 
+    def convert2bng(self):
+        return "inlude_products(%d,%s)" % (self.__idx, self.__pttrn)
+
 class ExcludeProducts(Option):
 
     def __init__(self, idx, pttrn):
@@ -741,6 +751,9 @@ class ExcludeProducts(Option):
 
         self.__idx = idx
         self.__pttrn = pttrn
+
+    def convert2bng(self):
+        return "exlude_products(%d,%s)" % (self.__idx, self.__pttrn)
 
     def match(self, products, correspondence):
         if not (len(correspondence) > self.__idx - 1):

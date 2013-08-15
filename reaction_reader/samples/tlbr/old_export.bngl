@@ -1,0 +1,16 @@
+begin molecule types
+	R(l)
+	L(r)
+end molecule types
+begin seed species
+	R(l)	1.000000
+	L(r)	2.000000
+end seed species
+begin reaction rules
+	R(l)+L(r) -> R(l!1).L(r)	3.000000
+	R(l!1).L(r) -> R(l)+L(r)	4.000000
+	R(l)+L(r!+) -> R(l!1).L(r!+)	5.000000
+	R(l!1).L(r!+) -> R(l)+L(r!+)	4.000000
+	R(l)+L(r!_2) -> R(l!1).L(r!_2)	5.000000
+	R(l!1).L(r!_2) -> R(l)+L(r!_2)	4.000000
+end reaction rules

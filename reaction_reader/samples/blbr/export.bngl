@@ -1,0 +1,22 @@
+begin seed species
+	R(r1,r2)	14.000000
+	L(l1,l2)	15.000000
+end seed species
+begin reaction rules
+	R(r1)+L(l1,l2) -> R(r1!1).L(l1!1,l2)	0.000000
+	R(r1!1).L(l1!1,l2) -> R(r1)+L(l1,l2)	0.000000
+	R(r2)+L(l1,l2) -> R(r2!1).L(l1,l2!1)	0.000000
+	R(r2!1).L(l1,l2!1) -> R(r2)+L(l1,l2)	0.000000
+	R(r1)+L(l1,l2!+) -> R(r1!1).L(l1!1,l2!+)	0.000000
+	R(r1!1).L(l1!1,l2!+) -> R(r1)+L(l1,l2!+)	0.000000
+	R(r2)+L(l1!+,l2) -> R(r2!1).L(l1!+,l2!1)	0.000000
+	R(r2!1).L(l1!+,l2!1) -> R(r2)+L(l1!+,l2)	0.000000
+	R(r1).L(l1) -> R(r1!1).L(l1!1)	0.000000
+	R(r1!1).L(l1!1) -> R(r1).L(l1)	0.000000
+	R(r2).L(l2) -> R(r2!1).L(l2!1)	0.000000
+	R(r2!1).L(l2!1) -> R(r2).L(l2)	0.000000
+end reaction rules
+begin molecule types
+	R(r1,r2)
+	L(l2,l1)
+end molecule types

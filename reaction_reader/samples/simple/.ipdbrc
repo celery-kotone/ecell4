@@ -1,0 +1,6 @@
+import ecell4.reaction_reader.decorator
+
+break ecell4.reaction_reader.decorator.ReactionRulesCallback.notify_comparisons
+break ecell4.reaction_reader.decorator.SpeciesAttributesCallback.__init__
+break ecell4.reaction_reader.decorator.SpeciesAttributesCallback.notify_bitwise_operations
+

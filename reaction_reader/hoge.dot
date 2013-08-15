@@ -1,0 +1,5 @@
+digraph mapk {
+        graph [label = "mapk", labelloc = t];
+        "mapk(phos=pYpT^1)" -> "pp(bs^1)|(1, 2)";
+        "pp(bs^1)|(1, 2)" -> "mapk(phos=pYpT^1)";
+}
