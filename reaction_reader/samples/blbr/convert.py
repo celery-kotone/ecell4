@@ -3,6 +3,7 @@ from ecell4.reaction_reader.species import generate_reactions, convert2bng_seed_
 from blbr import attributegen, rulegen
 
 
-convert2bng_seed_species( attributegen() )
-convert2bng_reaction_rules( rulegen() )
-convert2bng_moleculetypes( rulegen() )
+with open("export.bngl", "w") as f:
+    convert2bng_seed_species(f,  attributegen() )
+    convert2bng_reaction_rules(f, rulegen() )
+    convert2bng_moleculetypes(f, rulegen() )

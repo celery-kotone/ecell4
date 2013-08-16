@@ -972,13 +972,13 @@ class Convert2BNGManager(object):
         if 0 < len(species) and 0 < len(rules):
             self.build_modification_collection_dict()
 
-    def format_as_seed_species(self, fd):
+    def write_section_seed_species(self, fd):
         fd.write("begin seed species\n")
         for i, (sp, attr) in enumerate( self.__species ):
             fd.write("\t%s\t%f\n" % (sp.convert2bng(), attr))
         fd.write("end seed species\n")
 
-    def format_as_molecule_types(self, fd):
+    def write_section_molecule_types(self, fd):
         def build_molecules_type_query_list(current_dict):
             retval = []
             for su_name in current_dict:
@@ -992,14 +992,13 @@ class Convert2BNGManager(object):
                 retval.append("%s(%s)" % (su_name, ','.join(mod_list) ))
             return retval
 
-
         # write
         fd.write("begin molecule types\n")
         for s in build_molecules_type_query_list(self.__modification_collection_dict):
             fd.write("\t%s\n" % s)
         fd.write("end molecule types\n")
 
-    def format_as_reaction_rules(self, fd):
+    def write_section_reaction_rules(self, fd):
         fd.write("begin reaction rules\n")
         for i, rr in enumerate(self.__rules):
             s = "\t%s\t%f" % (rr.convert2bng(),rr.options()[0])
@@ -1023,7 +1022,7 @@ class Convert2BNGManager(object):
                     current_dict[su_name][mod] = [state]
             return current_dict
         #-------------------------------------------------------------------
-        current_dict = {}
+        temp_dict = {}
         reactants = []
         products = []
         for rr in self.__rules:
@@ -1031,11 +1030,11 @@ class Convert2BNGManager(object):
             products = rr.products()
             for r in reactants:
                 for su in r.get_subunit_list():
-                    current_dict = add_modification_collection_dict_subunit(current_dict, su)
+                    temp_dict = add_modification_collection_dict_subunit(temp_dict, su)
             for p in products:
                 for su in p.get_subunit_list():
-                    current_dict = add_modification_collection_dict_subunit(current_dict, su)
-        self.__modification_collection_dict = current_dict
+                    temp_dict = add_modification_collection_dict_subunit(temp_dict, su)
+        self.__modification_collection_dict = temp_dict
 
 
 def convert2bng_moleculetypes(fd, rules):
