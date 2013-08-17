@@ -1021,7 +1021,6 @@ class Convert2BNGManager(object):
                 else:
                     current_dict[su_name][mod] = [state]
             return current_dict
-        #-------------------------------------------------------------------
         temp_dict = {}
         reactants = []
         products = []
@@ -1035,6 +1034,9 @@ class Convert2BNGManager(object):
                 for su in p.get_subunit_list():
                     temp_dict = add_modification_collection_dict_subunit(temp_dict, su)
         self.__modification_collection_dict = temp_dict
+    
+    def get_modification_collection_dict(self):
+        return self.__modification_collection_dict
 
 
 def convert2bng_moleculetypes(fd, rules):
@@ -1088,7 +1090,7 @@ def convert2bng_seed_species(fd, species):
 def convert2bng_reaction_rules(fd, rules):
     fd.write("begin reaction rules\n")
     for i, rr in enumerate(rules):
-        fd.write("\t%s\t%f\n" % (rr.convert2bng(), rr.k()) )
+        fd.write("\t%s\t%f\n" % (rr.convert2bng(), rr.options()[0]) )
     fd.write("end reaction rules\n")
 
 def export_bng(fd, species, rules):
